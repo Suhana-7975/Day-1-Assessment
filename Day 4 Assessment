@@ -60,7 +60,7 @@ public class Day4testcase2 {
 			System.out.println(ele.getAccessibleName());
 			if (ele.getAccessibleName().equals("Password"))
 			{
-				ele.sendKeys("Arshiya");
+				ele.sendKeys("Suhana");
 			}	
 		}
     driver.quit();
