@@ -1,0 +1,484 @@
+//pom login_page
+
+package PomFramework;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class LoginPage {
+
+    WebDriver driver;
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(name = "username")
+    private WebElement username;
+
+    @FindBy(name = "password")
+    private WebElement password;
+
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement login;
+
+
+    public void getUsername(String usernameData) {
+        username.sendKeys(usernameData);
+    }
+
+    public void getPassword(String passwordData) {
+        password.sendKeys(passwordData);
+    }
+
+    public void getLogin() {
+        login.click();
+    }
+}
+
+//pom recruitement page
+
+package PomFramework;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class RecruitmentPage {
+
+    WebDriver driver;
+
+    public RecruitmentPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(xpath = "//span[normalize-space()='Recruitment']")
+    private WebElement recruitment;
+
+    @FindBy(xpath = "//a[normalize-space()='Candidates']")
+    private WebElement candidates;
+
+    @FindBy(xpath = "//button[contains(.,'Add')]")
+    private WebElement addCandidate;
+
+
+    public void getRecruitment() {
+        recruitment.click();
+    }
+
+    public void getCandidates() {
+        candidates.click();
+    }
+
+    public void getAddCandidate() {
+        addCandidate.click();
+    }
+}
+
+//pom add cadidate page
+
+package PomFramework;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class AddCandidatePage {
+
+    WebDriver driver;
+
+    public AddCandidatePage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(xpath = "//input[@placeholder='First Name']")
+    private WebElement firstName;
+
+    @FindBy(xpath = "//input[@placeholder='Middle Name']")
+    private WebElement middleName;
+
+    @FindBy(xpath = "//input[@placeholder='Last Name']")
+    private WebElement lastName;
+
+    @FindBy(xpath = "//label[normalize-space()='Vacancy']/ancestor::div[contains(@class,'oxd-input-group')]//div[contains(@class,'oxd-select-text')]")
+    private WebElement vacancy;
+
+    @FindBy(xpath = "//label[normalize-space()='Email']/../following-sibling::div//input")
+    private WebElement email;
+
+    @FindBy(xpath = "//label[normalize-space()='Contact Number']/../following-sibling::div//input")
+    private WebElement mobileNumber;
+
+    @FindBy(xpath = "//input[@type='file']")
+    private WebElement resume;
+
+    @FindBy(xpath = "//label[normalize-space()='Date of Application']/../following-sibling::div//input")
+    private WebElement applicationDate;
+
+    @FindBy(xpath = "//button[normalize-space()='Save']")
+    private WebElement save;
+
+
+    public void getFirstName(String firstNameData) {
+        firstName.sendKeys(firstNameData);
+    }
+
+    public void getMiddleName(String middleNameData) {
+        middleName.sendKeys(middleNameData);
+    }
+
+    public void getLastName(String lastNameData) {
+        lastName.sendKeys(lastNameData);
+    }
+
+    public void getVacancy() {
+        vacancy.click();
+    }
+
+    public void getEmail(String emailData) {
+        email.sendKeys(emailData);
+    }
+
+    public void getMobileNumber(String mobileData) {
+        mobileNumber.sendKeys(mobileData);
+    }
+
+    public void getResume(String resumePath) {
+        resume.sendKeys(resumePath);
+    }
+
+    public void getApplicationDate(String dateData) {
+        applicationDate.sendKeys(dateData);
+    }
+
+    public void getSave() {
+        save.click();
+    }
+}
+
+//pom candidate search page
+
+package PomFramework;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class CandidateSearchPage {
+
+    WebDriver driver;
+
+    public CandidateSearchPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(xpath = "//label[normalize-space()='Job Title']/ancestor::div[contains(@class,'oxd-input-group')]//div[contains(@class,'oxd-select-text')]")
+    private WebElement jobTitle;
+
+    @FindBy(xpath = "//label[normalize-space()='Vacancy']/ancestor::div[contains(@class,'oxd-input-group')]//div[contains(@class,'oxd-select-text')]")
+    private WebElement jobVacancy;
+
+    @FindBy(xpath = "//label[normalize-space()='Hiring Manager']/ancestor::div[contains(@class,'oxd-input-group')]//div[contains(@class,'oxd-select-text')]")
+    private WebElement hiringManager;
+
+    @FindBy(xpath = "//label[normalize-space()='Status']/ancestor::div[contains(@class,'oxd-input-group')]//div[contains(@class,'oxd-select-text')]")
+    private WebElement status;
+
+    @FindBy(xpath = "//label[normalize-space()='Candidate Name']/ancestor::div[contains(@class,'oxd-input-group')]//input")
+    private WebElement candidateName;
+
+    @FindBy(xpath = "//input[@placeholder='From']")
+    private WebElement dateFrom;
+
+    @FindBy(xpath = "//input[@placeholder='To']")
+    private WebElement dateTo;
+
+    @FindBy(xpath = "//button[normalize-space()='Search']")
+    private WebElement search;
+
+
+    public void getJobTitle() {
+        jobTitle.click();
+    }
+
+    public void getJobVacancy() {
+        jobVacancy.click();
+    }
+
+    public void getHiringManager() {
+        hiringManager.click();
+    }
+
+    public void getStatus() {
+        status.click();
+    }
+
+    public void getCandidateName(String candidateNameData) {
+        candidateName.sendKeys(candidateNameData);
+    }
+
+    public void getDateFrom(String dateData) {
+        dateFrom.sendKeys(dateData);
+    }
+
+    public void getDateTo(String dateData) {
+        dateTo.sendKeys(dateData);
+    }
+
+    public void getSearch() {
+        search.click();
+    }
+}
+
+//pom logout page
+
+package PomFramework;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class HomePage {
+
+    WebDriver driver;
+
+    public HomePage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    @FindBy(xpath = "//span[contains(@class,'oxd-userdropdown-tab')]")
+    private WebElement userDropdown;
+
+    @FindBy(xpath = "//a[normalize-space()='Logout']")
+    private WebElement logout;
+
+
+    public void getUserDropdown() {
+        userDropdown.click();
+    }
+
+    public void getLogout() {
+        logout.click();
+    }
+}
+
+//property file 
+
+browser chrome
+url https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index
+username Admin
+password admin123
+
+//testscript code
+
+public class Day8_testcase1 {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+				// PROPERTY FILE 
+
+				FileInputStream f = new FileInputStream("./src/test/resources/DDT/Day8_testcase.properties");
+
+				Properties p = new Properties();
+				p.load(f);
+
+				String brow = p.getProperty("browser");
+				String url = p.getProperty("url");
+				String un = p.getProperty("username");
+				String pw = p.getProperty("password");
+
+
+				//EXCEL FILE 
+
+				FileInputStream excel = new FileInputStream("./src/test/resources/DDT/TestData.xlsx");
+
+				Workbook wb = WorkbookFactory.create(excel);
+
+				Sheet sh = wb.getSheet("Recruitment");
+
+				Row row = sh.getRow(1);
+
+				String firstName = row.getCell(0).getStringCellValue();
+				String middleName = row.getCell(1).getStringCellValue();
+				String lastName = row.getCell(2).getStringCellValue();
+				String vacancyData = row.getCell(3).getStringCellValue();
+				String email = row.getCell(4).getStringCellValue();
+
+				String mobile = String.valueOf((long) row.getCell(5).getNumericCellValue());
+				String resumePath = row.getCell(6).getStringCellValue();
+				String applicationDate = row.getCell(7).getStringCellValue();
+
+				String jobTitleData = row.getCell(8).getStringCellValue();
+				String hiringManagerData = row.getCell(9).getStringCellValue();
+				String statusData = row.getCell(10).getStringCellValue();
+
+
+				// BROWSER 
+
+				WebDriver driver = null;
+
+				if (brow.equals("chrome")) {
+					driver = new ChromeDriver();
+				}
+
+				driver.manage().window().maximize();
+
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+
+				driver.get(url);
+
+               //  POM OBJECTS 
+
+        LoginPage loginPage = new LoginPage(driver);
+
+        RecruitmentPage recruitmentPage = new RecruitmentPage(driver);
+
+        AddCandidatePage addCandidatePage = new AddCandidatePage(driver);
+
+        CandidateSearchPage candidateSearchPage = new CandidateSearchPage(driver);
+
+        HomePage homePage = new HomePage(driver);
+
+
+        //  LOGIN 
+
+        loginPage.getUsername(un);
+
+        loginPage.getPassword(pw);
+
+        loginPage.getLogin();
+
+
+        //  RECRUITMENT 
+
+        recruitmentPage.getRecruitment();
+
+        recruitmentPage.getCandidates();
+
+        recruitmentPage.getAddCandidate();
+
+
+        //  ADD CANDIDATE 
+
+        addCandidatePage.getFirstName(firstName);
+
+        addCandidatePage.getMiddleName(middleName);
+
+        addCandidatePage.getLastName(lastName);
+
+
+        //  SELECT VACANCY 
+
+        addCandidatePage.getVacancy();
+
+        driver.findElement(By.xpath("//div[@role='option']//span[normalize-space()='"+ vacancyData + "']")).click();
+
+        // EMAIL 
+
+        addCandidatePage.getEmail(email);
+
+
+        //  MOBILE 
+
+        addCandidatePage.getMobileNumber(mobile);
+
+
+        // UPLOAD RESUME 
+
+        addCandidatePage.getResume(resumePath);
+
+
+        //  APPLICATION DATE 
+
+        addCandidatePage.getApplicationDate(applicationDate);
+
+
+        //  SAVE 
+
+        addCandidatePage.getSave();
+
+
+        //  CANDIDATES 
+
+        recruitmentPage.getCandidates();
+
+
+        //  JOB TITLE 
+
+        candidateSearchPage.getJobTitle();
+
+        driver.findElement(By.xpath("//div[@role='option']//span[normalize-space()='"+ jobTitleData + "']")).click();
+
+
+        //  JOB VACANCY
+
+        candidateSearchPage.getJobVacancy();
+
+        driver.findElement(By.xpath("//div[@role='option']//span[normalize-space()='"+ vacancyData + "']")).click();
+
+        //  HIRING MANAGER 
+
+        candidateSearchPage.getHiringManager();
+
+        driver.findElement(By.xpath("(//div[@role='option'])[2]")).click();
+
+        // STATUS 
+
+        candidateSearchPage.getStatus();
+
+        driver.findElement(By.xpath("//div[@role='option']//span[normalize-space()='"+ statusData + "']")) .click();
+
+        // CANDIDATE NAME
+
+        candidateSearchPage.getCandidateName(firstName);
+
+
+        //  APPLICATION DATE 
+
+        candidateSearchPage.getDateFrom(applicationDate);
+
+        candidateSearchPage.getDateTo(applicationDate);
+
+
+        //  SEARCH 
+
+        candidateSearchPage.getSearch();
+
+
+        // VERIFY RECORD 
+
+        int count = driver.findElements(By.xpath("//div[contains(@class,'oxd-table-body')]"+ "//div[contains(@class,'oxd-table-row')]")).size();
+
+        if (count > 0) {
+
+            System.out.println("Candidate is added successfully");
+
+        } else {
+
+            System.out.println("Candidate is NOT added");
+        }
+
+
+        //  LOGOUT 
+
+        homePage.getUserDropdown();
+
+        homePage.getLogout();
+
+
+        // CLOSE 
+
+        driver.quit();
+    }
+}
