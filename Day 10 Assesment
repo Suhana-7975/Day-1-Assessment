@@ -1,0 +1,351 @@
+//POM Login Page
+public class LoginPage {
+
+	    WebDriver driver;
+
+	    @FindBy(id = "user-name")
+	    private WebElement username;
+
+	    @FindBy(id = "password")
+	    private WebElement password;
+
+	    @FindBy(id = "login-button")
+	    private WebElement login;
+
+	    public LoginPage(WebDriver driver) {
+
+	        this.driver = driver;
+
+	        PageFactory.initElements(driver, this);
+	    }
+
+	    public void enterUsername(String un) {
+
+	        username.sendKeys(un);
+	    }
+
+	    public void enterPassword(String pwd) {
+
+	        password.sendKeys(pwd);
+	    }
+
+	    public void clickLogin() {
+
+	        login.click();
+	    }
+}
+
+//POM Products Page
+
+public class ProductsPage {
+
+	    WebDriver driver;
+
+	    @FindBy(xpath = "//span[text()='Products']")
+	    private WebElement products;
+
+	    @FindBy(id = "add-to-cart-sauce-labs-backpack")
+	    private WebElement backpack;
+
+	    @FindBy(className = "shopping_cart_link")
+	    private WebElement cart;
+
+	    @FindBy(className = "shopping_cart_badge")
+	    private WebElement cartCount;
+
+	    public ProductsPage(WebDriver driver) {
+
+	        this.driver = driver;
+
+	        PageFactory.initElements(driver, this);
+	    }
+
+	    public boolean verifyProductsPage() {
+
+	        return products.isDisplayed();
+	    }
+
+	    public void addBackpack() {
+
+	        backpack.click();
+	    }
+
+	    public String getCartCount() {
+
+	        return cartCount.getText();
+	    }
+
+	    public void clickCart() {
+
+	        cart.click();
+	    }
+
+}
+
+//POM Cart Page
+
+public class CartPage {
+
+	    WebDriver driver;
+
+	    @FindBy(xpath = "//div[text()='Sauce Labs Backpack']")
+	    private WebElement backpack;
+
+	    @FindBy(id = "checkout")
+	    private WebElement checkout;
+
+	    public CartPage(WebDriver driver) {
+
+	        this.driver = driver;
+
+	        PageFactory.initElements(driver, this);
+	    }
+
+	    public boolean verifyBackpack() {
+
+	        return backpack.isDisplayed();
+	    }
+
+	    public void clickCheckout() {
+
+	        checkout.click();
+	    }
+
+}
+
+//POM Checkout Page
+
+public class CheckoutPage {
+
+	    WebDriver driver;
+
+	    @FindBy(id = "first-name")
+	    private WebElement firstName;
+
+	    @FindBy(id = "last-name")
+	    private WebElement lastName;
+
+	    @FindBy(id = "postal-code")
+	    private WebElement postalCode;
+
+	    @FindBy(id = "continue")
+	    private WebElement continueButton;
+
+	    public CheckoutPage(WebDriver driver) {
+
+	        this.driver = driver;
+
+	        PageFactory.initElements(driver, this);
+	    }
+
+	    public void enterFirstName(String fn) {
+
+	        firstName.sendKeys(fn);
+	    }
+
+	    public void enterLastName(String ln) {
+
+	        lastName.sendKeys(ln);
+	    }
+
+	    public void enterPostalCode(String pc) {
+
+	        postalCode.sendKeys(pc);
+	    }
+
+	    public void clickContinue() {
+
+	        continueButton.click();
+	    }
+
+}
+
+//POM Checkout Overview Page
+
+public class CheckoutOverviewPage {
+	
+	    WebDriver driver;
+
+	    @FindBy(xpath = "//span[text()='Checkout: Overview']")
+	    private WebElement checkoutOverview;
+
+	    @FindBy(id = "finish")
+	    private WebElement finish;
+
+	    @FindBy(xpath = "//h2[text()='Thank you for your order!']")
+	    private WebElement successMessage;
+
+	    public CheckoutOverviewPage(WebDriver driver) {
+
+	        this.driver = driver;
+
+	        PageFactory.initElements(driver, this);
+	    }
+
+	    public boolean verifyCheckoutOverview() {
+
+	        return checkoutOverview.isDisplayed();
+	    }
+
+	    public void clickFinish() {
+
+	        finish.click();
+	    }
+
+	    public boolean verifySuccessMessage() {
+
+	        return successMessage.isDisplayed();
+	    }
+}
+
+//Property file
+
+browser chrome
+url https://www.saucedemo.com/
+username standard_user
+password secret_sauce
+
+//Excel file
+firstname	lastname	postalcode
+Arshiya	   Anjum	   583101
+
+//Base Class
+
+public class Day10_Base {
+	protected WebDriver driver;
+	protected Properties p;
+	protected LoginPage lp;
+	protected ProductsPage pp;
+	protected CartPage cp;
+	protected CheckoutPage chp;
+	protected CheckoutOverviewPage cop;
+	protected String firstName;
+	protected String lastName;
+	protected String postalCode;
+	 @BeforeClass
+	    public void setup() throws IOException {
+
+	        // PROPERTY FILE
+	        FileInputStream f =new FileInputStream("./src/test/resources/DDT/CommonData.properties");
+	        p = new Properties();
+	        p.load(f);
+	        String browser =p.getProperty("browser");
+	        String url =p.getProperty("url");
+	        
+	        // BROWSER
+	        if (browser.equalsIgnoreCase("chrome")) {
+	        	ChromeOptions settings = new ChromeOptions();
+	            Map<String, Object> prefs = new HashMap<>();
+	            prefs.put("profile.password_manager_leak_detection", false);
+	            settings.setExperimentalOption("prefs", prefs);
+	            driver = new ChromeDriver(settings);
+	        }
+	        driver.manage().window().maximize();
+	        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	        driver.get(url);
+
+	        // POM OBJECT CREATION
+	        lp = new LoginPage(driver);
+	        pp = new ProductsPage(driver);
+	        cp = new CartPage(driver);
+	        chp = new CheckoutPage(driver);
+	        cop = new CheckoutOverviewPage(driver);
+
+	        // EXCEL FILE
+	        FileInputStream excel =new FileInputStream("./src/test/resources/DDT/Day10_testcase.xlsx");
+	        Workbook wb =WorkbookFactory.create(excel);
+	        firstName = wb.getSheet("Sheet1").getRow(1).getCell(0).toString();
+	        lastName = wb.getSheet("Sheet1").getRow(1).getCell(1).toString();
+	        postalCode = wb.getSheet("Sheet1").getRow(1).getCell(2).toString();
+
+	    }
+	 @AfterClass
+	    public void closeBrowser() {
+	        driver.quit();
+	    }
+}
+
+//testScript
+
+public class Day10_testcase1 extends Day10_Base {
+  
+    // TEST METHOD 1
+
+    @Test(priority = 1)
+    public void loginTest() throws InterruptedException {
+
+        String username =p.getProperty("username");
+        String password = p.getProperty("password");
+
+        // Login
+        lp.enterUsername(username);
+        lp.enterPassword(password);
+        lp.clickLogin();
+        Thread.sleep(2000);
+        
+        // Verify Products Page
+        if (pp.verifyProductsPage()) {
+            System.out.println("Products page is displayed");
+        } else {
+            System.out.println("Products page is NOT displayed");
+        }
+    }
+
+    // TEST METHOD 2
+
+    @Test(priority = 2, dependsOnMethods = "loginTest")
+    public void orderPlacementTest() throws InterruptedException {
+        // Add Sauce Labs Backpack
+        pp.addBackpack();
+        // Verify Cart Contains 1 Item
+        if (pp.getCartCount().equals("1")) {
+            System.out.println("Cart contains 1 item");
+        } else {
+            System.out.println("Cart does not contain 1 item");
+        }
+        
+        // Open Cart
+        pp.clickCart();
+        Thread.sleep(2000);
+
+        // Verify Backpack is Displayed
+        if (cp.verifyBackpack()) {
+            System.out.println("Sauce Labs Backpack is displayed");
+        } else {
+            System.out.println("Sauce Labs Backpack is NOT displayed");
+        }
+        
+        // Click Checkout
+        cp.clickCheckout();
+        Thread.sleep(2000);
+
+        // Enter First Name
+        chp.enterFirstName(firstName);
+
+        // Enter Last Name
+        chp.enterLastName(lastName);
+
+        // Enter Postal Code
+        chp.enterPostalCode(postalCode);
+
+        // Click Continue
+        chp.clickContinue();
+        Thread.sleep(2000);
+        // Verify Checkout Overview Page
+        if (cop.verifyCheckoutOverview()) {
+            System.out.println("Checkout: Overview page is displayed");
+        } else {
+            System.out.println("Checkout: Overview page is NOT displayed");
+        }     
+
+        // Click Finish
+        cop.clickFinish();
+
+        // Verify Success Message
+        if (cop.verifySuccessMessage()) {
+            System.out.println("Thank you for your order!");
+        } else {
+            System.out.println("Order was not successful");
+        }
+    }
+}
