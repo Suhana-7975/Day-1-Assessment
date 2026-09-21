@@ -1,0 +1,598 @@
+//testcase1
+
+//Login page
+package Assesmentt;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class Day11_Loginpage {
+
+	    WebDriver driver;
+
+	    @FindBy(name = "username")
+	    private WebElement username;
+
+	    @FindBy(name = "password")
+	    private WebElement password;
+
+	    @FindBy(xpath = "//button[@type='submit']")
+	    private WebElement login;
+
+	    public Day11_Loginpage(WebDriver driver) {
+	        this.driver = driver;
+	        PageFactory.initElements(driver,this);
+	    }
+
+	    public void enterUsername(String un) {
+	        username.sendKeys(un);
+	    }
+
+	    public void enterPassword(String pwd) {
+
+	        password.sendKeys(pwd);
+	    }
+
+	    public void clickLogin() {
+
+	        login.click();
+	    }
+
+}
+
+//POM Recuitement file
+package Assesmentt;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+
+public class Day11_Recuitementpage {
+
+	    WebDriver driver;
+
+	    @FindBy(xpath = "//span[text()='Recruitment']")
+	    private WebElement recruitment;
+
+	    @FindBy(xpath = "//a[text()='Vacancies']")
+	    private WebElement vacancies;
+
+	    @FindBy(xpath = "//button[normalize-space()='Add']")
+	    private WebElement addButton;
+
+	    public Day11_Recuitementpage(WebDriver driver) {
+	        this.driver = driver;
+	        PageFactory.initElements(driver,this);
+	    }
+
+	    public void clickRecruitment() {
+	        recruitment.click();
+	    }
+
+	    public void clickVacancies() {
+	        vacancies.click();
+	    }
+
+	    public void clickAdd() {
+	        addButton.click();
+	    }
+
+}
+
+//POM Vacanacy file
+package Assesmentt;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+
+public class Day11_Vancancypage {
+	    WebDriver driver;
+
+	    @FindBy(xpath = "//label[text()='Vacancy Name']/parent::div/following-sibling::div//input")
+	    private WebElement vacancyName;
+
+	    @FindBy(xpath = "//label[text()='Job Title']/parent::div/following-sibling::div//div[contains(@class,'oxd-select-text')]")
+	    private WebElement jobTitle;
+
+	    @FindBy(xpath = "//textarea")
+	    private WebElement description;
+
+	    @FindBy(xpath = "//label[text()='Hiring Manager']/parent::div/following-sibling::div//input")
+	    private WebElement hiringManager;
+
+	    @FindBy(xpath = "//label[text()='Number of Positions']/parent::div/following-sibling::div//input")
+	    private WebElement numberOfPositions;
+
+	    @FindBy(xpath = "//button[normalize-space()='Save']")
+	    private WebElement save;
+
+	    @FindBy(xpath = "//div[@role='option']//span")
+	    
+	    private List<WebElement> dropdownOptions;
+
+	    public Day11_Vancancypage(WebDriver driver) {
+	        this.driver = driver;
+	        PageFactory.initElements(driver,this);
+	    }
+
+	    public void enterVacancyName( String name) {
+	        vacancyName.sendKeys(name);
+	    }
+
+	    public void selectJobTitle(String title) {
+	        jobTitle.click();
+	        for (WebElement option : dropdownOptions) {
+	            if (option.getText().equalsIgnoreCase(title)) {
+	                option.click();
+	                break;
+	            }
+	        }
+	    }
+
+	    public void enterDescription(String desc) {
+	        description.sendKeys(desc);
+	    }
+
+	    public void selectHiringManager(String manager) {
+	        hiringManager.sendKeys(manager);
+	    }
+
+	    public void selectHiringManagerOption(String manager) {
+	        for (WebElement option : dropdownOptions) {
+	            if (option.getText().equalsIgnoreCase(manager)) {
+	                option.click();
+	                break;
+	            }
+	        }
+	    }
+
+	    public void enterNumberOfPositions(String positions) {
+	        numberOfPositions.sendKeys(positions);
+	    }
+
+	    public void clickSave() {
+	        save.click();
+	    }
+
+}
+
+//property file
+browser chrome
+url https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index
+username Admin
+password admin123
+
+//Excel file
+vacancyName	jobTitle	        description	                                      hiringManager	  numberOfPositions
+AI Engineer	Software Engineer	Responsible for developing AI and ML applications	Linda Anderson	3
+
+//Base file
+package Assesmentt;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+
+public class Day11_Base {
+
+	    protected WebDriver driver;
+	    protected Properties p;
+	    protected Day11_Loginpage lp;
+	    protected Day11_Recuitementpage rp;
+	    protected Day11_Vancancypage vp;
+	    protected String vacancyName;
+	    protected String jobTitle;
+	    protected String description;
+	    protected String hiringManager;
+	    protected String numberOfPositions;
+
+	    @BeforeClass
+	    public void setup() throws IOException {
+	        // PROPERTY FILE
+	        FileInputStream f =new FileInputStream("./src/test/resources/DDT/Day6_testcase1.properties");
+	        p = new Properties();
+	        p.load(f);
+	        String browser =p.getProperty("browser");
+	        String url =p.getProperty("url");
+
+	        // BROWSER
+	        if (browser.equalsIgnoreCase("chrome")) {
+	            // Avoid Change Password popup
+	            ChromeOptions settings =new ChromeOptions();
+	            Map<String, Object> prefs =new HashMap<>();
+	            prefs.put("profile.password_manager_leak_detection",false);
+	            settings.setExperimentalOption("prefs",prefs);
+	            driver =new ChromeDriver(settings);
+	        }
+
+	        driver.manage().window().maximize();
+	        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	        driver.get(url);
+
+	        // POM OBJECT CREATION
+	        lp = new Day11_Loginpage(driver);
+	        rp = new Day11_Recuitementpage(driver);
+	        vp = new Day11_Vancancypage(driver);
+
+	        // EXCEL FILE
+	        FileInputStream excel =new FileInputStream("./src/test/resources/DDT/Day6_testcase.xlsx");
+	        Workbook wb =WorkbookFactory.create(excel);
+	        Sheet s = wb.getSheet("Sheet2");
+	        vacancyName = s.getRow(1).getCell(0).getStringCellValue();
+	        jobTitle = s.getRow(1).getCell(1).getStringCellValue();
+	        description =s.getRow(1).getCell(2).getStringCellValue();
+	        hiringManager =s.getRow(1).getCell(3).getStringCellValue();
+	        numberOfPositions = String.valueOf((int) s.getRow(1).getCell(4).getNumericCellValue());
+    
+	    }
+
+	    @AfterClass
+	    public void closeBrowser() {
+	        driver.quit();
+	    }
+
+}
+
+//testScript
+package Assessment;
+import org.testng.annotations.Test;
+
+import Assesmentt.Day11_Base;
+
+public class Day11_testcase extends Day11_Base{
+	
+	    @Test
+	    public void addVacancyTest()throws InterruptedException {
+	        // LOGIN
+	        String username =p.getProperty("username");
+	        String password =p.getProperty("password");
+	        lp.enterUsername(username);
+	        lp.enterPassword(password);
+	        lp.clickLogin();	       
+
+	        // CLICK RECRUITMENT
+	        rp.clickRecruitment();
+	        Thread.sleep(2000);
+
+	        // CLICK VACANCIES
+	        rp.clickVacancies();
+	        Thread.sleep(2000);
+
+	        // CLICK ADD
+	        rp.clickAdd();
+	        Thread.sleep(2000);
+
+	        // ENTER VACANCY NAME
+	        vp.enterVacancyName(vacancyName);
+
+	        // SELECT JOB TITLE
+	        vp.selectJobTitle(jobTitle);
+
+	        // ENTER DESCRIPTION
+	        vp.enterDescription(description);
+	     
+	        // SELECT HIRING MANAGER
+	        vp.selectHiringManager(hiringManager);	       
+	        vp.selectHiringManagerOption(hiringManager);	        
+
+	        // ENTER NUMBER OF POSITIONS
+	        vp.enterNumberOfPositions(numberOfPositions);
+	        Thread.sleep(2000);
+
+	        // CLICK SAVE
+	        vp.clickSave();
+	        System.out.println("Vacancy added successfully");
+	    }
+
+}
+
+
+
+//testcase2
+
+//POM Login Page
+package Assesmentt;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+
+public class Day11_loginpage1 {
+		WebDriver driver;
+
+		@FindBy(name = "username")
+		private WebElement username;
+
+		@FindBy(name = "password")
+		private WebElement password;
+
+		@FindBy(xpath = "//button[@type='submit']")
+		private WebElement login;
+
+		@FindBy(xpath = "//span[contains(@class,'oxd-userdropdown-tab')]")
+		private WebElement userDropdown;
+
+		@FindBy(xpath = "//a[text()='Logout']")
+		private WebElement logout;
+
+		public Day11_loginpage1(WebDriver driver) {
+			this.driver = driver;
+			PageFactory.initElements(driver, this);
+		}
+
+		public void enterUsername(String un) {
+			username.sendKeys(un);
+		}
+
+		public void enterPassword(String pwd) {
+			password.sendKeys(pwd);
+		}
+
+		public void clickLogin() {
+			login.click();
+		}
+
+		public void clickUserDropdown() {
+			userDropdown.click();
+		}
+
+		public void clickLogout() {
+			logout.click();
+		}
+
+}
+
+
+//POM My Info File
+package Assesmentt;
+
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class MyInfoPage {
+
+	WebDriver driver;
+
+	@FindBy(xpath = "//span[text()='My Info']")
+	private WebElement myInfo;
+
+	@FindBy(name = "firstName")
+	private WebElement firstName;
+
+	@FindBy(name = "lastName")
+	private WebElement lastName;
+
+	@FindBy(xpath = "//label[text()='Employee Id']/parent::div/following-sibling::div/input")
+	private WebElement employeeId;
+
+	@FindBy(xpath = "//h6[text()='Personal Details']/ancestor::div[contains(@class,'orangehrm-card-container')]//button[@type='submit']")
+	private WebElement save;
+
+	public MyInfoPage(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
+
+	public void clickMyInfo() {
+		myInfo.click();
+	}
+
+	public void enterFirstName(String fname) {
+		firstName.click();
+		firstName.sendKeys(Keys.CONTROL, "a");
+		firstName.sendKeys(Keys.BACK_SPACE);
+		firstName.sendKeys(fname);
+	}
+
+	public void enterLastName(String lname) {
+		lastName.click();
+		lastName.sendKeys(Keys.CONTROL, "a");
+		lastName.sendKeys(Keys.BACK_SPACE);
+		lastName.sendKeys(lname);
+	}
+
+	public void enterEmployeeId(String eid) {
+		employeeId.click();
+		employeeId.sendKeys(Keys.CONTROL, "a");
+		employeeId.sendKeys(Keys.BACK_SPACE);
+		employeeId.sendKeys(eid);
+	}
+
+	public void clickSave() {
+		save.click();
+	}
+
+	// IS DISPLAYED METHODS
+	public boolean isFirstNameDisplayed() {
+		return firstName.isDisplayed();
+	}
+
+	public boolean isLastNameDisplayed() {
+		return lastName.isDisplayed();
+	}
+
+	public boolean isEmployeeIdDisplayed() {
+		return employeeId.isDisplayed();
+	}
+
+	// GET VALUES
+	public String getFirstName() {
+		return firstName.getAttribute("value");
+	}
+
+	public String getLastName() {
+		return lastName.getAttribute("value");
+	}
+
+	public String getEmployeeId() {
+		return employeeId.getAttribute("value");
+	}
+}
+
+//Base file
+package Assesmentt;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+
+public class Day11_Base1 {
+	
+		protected WebDriver driver;
+		protected Properties p;
+		protected Day11_loginpage1 lp;
+		protected MyInfoPage mp;
+		protected String firstName;
+		protected String lastName;
+		protected String employeeId;
+
+		@BeforeClass
+		public void setup() throws IOException {
+			// PROPERTY FILE
+			FileInputStream f = new FileInputStream("./src/test/resources/DDT/Day6_testcase1.properties");
+			p = new Properties();
+			p.load(f);
+			String browser = p.getProperty("browser");
+			String url = p.getProperty("url");
+			if (browser.equalsIgnoreCase("chrome")) {
+				ChromeOptions settings = new ChromeOptions();
+				Map<String, Object> prefs = new HashMap<>();
+				prefs.put("profile.password_manager_leak_detection", false);
+				settings.setExperimentalOption("prefs", prefs);
+				driver = new ChromeDriver(settings);
+			}
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+			driver.get(url);
+
+			// POM OBJECTS
+			lp = new Day11_loginpage1(driver);
+			mp = new MyInfoPage(driver);
+
+			// EXCEL FILE
+			FileInputStream excel = new FileInputStream("./src/test/resources/DDT/Day6_testcase.xlsx");
+			Workbook wb = WorkbookFactory.create(excel);
+			firstName = wb.getSheet("Sheet1").getRow(1).getCell(0).getStringCellValue();
+			lastName = wb.getSheet("Sheet1").getRow(1).getCell(2).getStringCellValue();
+			employeeId = wb.getSheet("Sheet1").getRow(1).getCell(3).getStringCellValue();
+
+		}
+
+		@AfterClass
+		public void closeBrowser() {
+			driver.quit();
+		}
+
+}
+
+
+//TestScript
+package Assessment;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import Assesmentt.Day11_Base1;
+
+public class Day11_testcase1 extends Day11_Base1 {
+
+	@Test(priority = 1)
+	public void editEmployeeDetails() throws InterruptedException {
+
+		// LOGIN
+		lp.enterUsername(p.getProperty("username"));
+		lp.enterPassword(p.getProperty("password"));
+		lp.clickLogin();
+		Thread.sleep(2000);
+
+		// MY INFO
+		mp.clickMyInfo();
+		Thread.sleep(2000);
+
+		// EDIT DETAILS
+		mp.enterFirstName(firstName);
+		mp.enterLastName(lastName);
+		mp.enterEmployeeId(employeeId);
+		Thread.sleep(1000);
+
+		// SAVE
+		mp.clickSave();
+		Thread.sleep(2000);
+
+		System.out.println("Employee details updated successfully");
+
+		// LOGOUT
+		lp.clickUserDropdown();
+		lp.clickLogout();
+		Thread.sleep(2000);
+	}
+
+
+	@Test(priority = 2, dependsOnMethods = "editEmployeeDetails")
+	public void verifyEmployeeDetails() throws InterruptedException {
+
+		// LOGIN AGAIN
+		lp.enterUsername(p.getProperty("username"));
+		lp.enterPassword(p.getProperty("password"));
+		lp.clickLogin();
+		Thread.sleep(2000);
+
+		// MY INFO
+		mp.clickMyInfo();
+		Thread.sleep(2000);
+
+		// VERIFY FIELDS ARE DISPLAYED
+		Assert.assertTrue(mp.isFirstNameDisplayed());
+		Assert.assertTrue(mp.isLastNameDisplayed());
+		Assert.assertTrue(mp.isEmployeeIdDisplayed());
+
+		// VERIFY UPDATED DETAILS
+		Assert.assertEquals(mp.getFirstName(), firstName);
+		Assert.assertEquals(mp.getLastName(), lastName);
+		Assert.assertEquals(mp.getEmployeeId(), employeeId);
+
+		System.out.println("Employee details verified successfully");
+
+		// LOGOUT
+		lp.clickUserDropdown();
+		lp.clickLogout();
+		Thread.sleep(2000);
+	}
+}
