@@ -1,0 +1,480 @@
+//testcase1
+package FinalTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class test1 {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		driver.get("https://demoapps.qspiders.com/ui/toggle?sublist=0");
+		driver.findElement(By.linkText("Disabled")).click();
+		Thread.sleep(2000);
+		WebElement btn1 = driver.findElement(By.id("tog"));
+		WebElement btn2 = driver.findElement(By.id("togg"));
+		WebElement btn3 = driver.findElement(By.id("toggl"));
+		WebElement btn4 = driver.findElement(By.id("toggler"));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].removeAttribute('disabled');", btn1);
+		js.executeScript("arguments[0].click();", btn1);
+		
+		js.executeScript("arguments[0].removeAttribute('disabled');", btn2);
+		js.executeScript("arguments[0].click();", btn2);
+		
+		js.executeScript("arguments[0].removeAttribute('disabled');", btn3);
+		js.executeScript("arguments[0].click();", btn3);
+		
+		js.executeScript("arguments[0].removeAttribute('disabled');", btn4);
+		js.executeScript("arguments[0].click();", btn4);
+		
+		driver.findElement(By.id("togglers")).click();
+		String text = driver.findElement(By.xpath("//p[text()='ORDER PLACED']")).getText();
+		if (text.equals("ORDER PLACED"))
+		{
+			System.out.println("Executed");
+		}
+		else
+		{
+			System.out.println("Not executed");
+		}
+		driver.quit();
+
+	}
+
+}
+
+
+//testcase2
+package FinalTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class test2 {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		driver.get("https://demoapps.qspiders.com/ui/slider?sublist=0");
+		WebElement slider = driver.findElement(By.xpath("//input[@type='range']"));
+		Actions action = new Actions(driver);
+		action.clickAndHold(slider).moveByOffset(100, 0).release().perform();
+        Thread.sleep(2000);
+        
+        //Verification
+		WebElement btn = driver.findElement(By.xpath("//h3[text()='Mens Cotton Jacket']"));
+		if (btn.isDisplayed())
+		{
+			System.out.println("Executed");
+		}
+		else
+		{
+			System.out.println("not executed");
+		}
+		driver.quit();
+	}
+
+}
+
+
+//testcase3
+package FinalTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class test3 {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		driver.get("https://demoapps.qspiders.com/ui/dragDrop/dragToMultiple?sublist=3");
+		WebElement accessory1 = driver.findElement(By.id("dragElement1"));
+		WebElement target1 = driver.findElement(By.id("dropZone2"));
+		
+		WebElement accessory2 = driver.findElement(By.id("dragElement2"));
+		WebElement target2 = driver.findElement(By.id("dropZone1"));
+
+		WebElement accessory3 = driver.findElement(By.id("dragElement3"));		
+		WebElement accessory4 = driver.findElement(By.id("dragElement4"));
+
+		Actions action = new Actions(driver);
+		action.click(accessory1).perform();
+		action.click(accessory3).perform();
+		action.clickAndHold(accessory1).moveToElement(target1).release().perform();
+		action.clickAndHold(accessory3).moveToElement(target1).release().perform();
+		Thread.sleep(2000);
+		
+		action.click(accessory2).perform();
+		action.click(accessory4).perform();
+		action.clickAndHold(accessory2).moveToElement(target2).release().perform();
+		action.clickAndHold(accessory4).moveToElement(target2).release().perform();
+		Thread.sleep(2000);
+		
+		driver.quit();
+	}
+
+}
+
+
+//testcase4
+package FinalTest;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class test4 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		WebDriver driver = new EdgeDriver();
+		driver.navigate().to("https://www.shoppersstack.com/");
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		
+		driver.findElement(By.xpath("//button[text()='Login']")).click();
+		driver.findElement(By.id("Email")).sendKeys("anjumarshiya016@gmail.com");
+		driver.findElement(By.id("Password")).sendKeys("Anjum165@");
+		driver.findElement(By.xpath("//span[text()='Login']")).click();
+		
+		driver.findElement(By.xpath("//span[text()='APPLE']")).click();
+		driver.findElement(By.id("Check Delivery")).sendKeys("583121");
+		WebElement ref = driver.findElement(By.id("Check"));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait.until(ExpectedConditions.elementToBeClickable(ref));
+		ref.click();
+		String text = driver.findElement(By.id("Check Delivery-helper-text")).getText();
+		System.out.println(text);
+
+	}
+
+}
+
+//Advance Selenium Orange HRM Code
+//Base file
+package Assesmentt;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+
+public class Day11_Base {
+
+	protected WebDriver driver;
+	String browser;
+	String url;
+	String username;
+	String password;
+
+	@BeforeSuite
+	public void BS() {
+		System.out.println("Open database connectivity");
+	}
+
+	@AfterSuite
+	public void AS() {
+		System.out.println("Close database connectivity");
+	}
+
+	@BeforeTest
+	public void BT() {
+		System.out.println("pre condition");
+	}
+
+	@AfterTest
+	public void AT() {
+		System.out.println("post condition");
+	}
+
+	@BeforeClass
+	public void setup() throws IOException {
+		// PROPERTY FILE
+		FileInputStream f =new FileInputStream("./src/test/resources/DDT/Day6_testcase1.properties");
+		Properties p = new Properties();
+		p.load(f);
+		browser = p.getProperty("browser");
+		url = p.getProperty("url");
+		 username = p.getProperty("username");
+		 password = p.getProperty("password");
+		ChromeOptions settings = new ChromeOptions();
+		Map<String, Object> prefs = new HashMap<>();
+		prefs.put("profile.password_manager_leak_detection", false);
+		settings.setExperimentalOption("prefs", prefs);
+		
+		if (browser.equalsIgnoreCase("chrome"))
+		{
+			driver = new ChromeDriver(settings);
+		}
+		if (browser.equalsIgnoreCase("edge"))
+		{
+			driver = new EdgeDriver();
+		}
+		if (browser.equalsIgnoreCase("firefox"))
+		{
+			driver = new FirefoxDriver();
+		}
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	}
+
+	@AfterClass
+	public void closeBrowser() {
+		driver.quit();
+	}
+
+	@BeforeMethod
+	public void BM() throws IOException {		
+				driver.get(url);
+				// LOGIN
+				Day11_loginpage1 lp = new Day11_loginpage1(driver);
+				lp.enterUsername(username);
+				lp.enterPassword(password);
+				lp.clickLogin();
+		        System.out.println("Login executed");
+	}
+
+	@AfterMethod
+	public void AM() {
+		Day11_loginpage1 lp = new Day11_loginpage1(driver);
+		// LOGOUT
+	    lp.clickUserDropdown();
+	    lp.clickLogout();
+		System.out.println("Logout");
+	}
+}
+
+//POM Login Page
+package Assesmentt;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+
+public class Day11_loginpage1 {
+		WebDriver driver;
+
+		@FindBy(name = "username")
+		private WebElement username;
+
+		@FindBy(name = "password")
+		private WebElement password;
+
+		@FindBy(xpath = "//button[@type='submit']")
+		private WebElement login;
+
+		@FindBy(xpath = "//span[contains(@class,'oxd-userdropdown-tab')]")
+		private WebElement userDropdown;
+
+		@FindBy(xpath = "//a[text()='Logout']")
+		private WebElement logout;
+
+		public Day11_loginpage1(WebDriver driver) {
+			this.driver = driver;
+			PageFactory.initElements(driver, this);
+		}
+
+		public void enterUsername(String un) {
+			username.sendKeys(un);
+		}
+
+		public void enterPassword(String pwd) {
+			password.sendKeys(pwd);
+		}
+
+		public void clickLogin() {
+			login.click();
+		}
+
+		public void clickUserDropdown() {
+			userDropdown.click();
+		}
+
+		public void clickLogout() {
+			logout.click();
+		}
+
+}
+
+//POM Buzz File
+package Assesmentt;
+
+import java.time.Duration;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class BuzzPage {
+
+		WebDriver driver;
+		public BuzzPage(WebDriver driver) {
+			this.driver = driver;
+			PageFactory.initElements(driver, this);
+		}
+
+		@FindBy(xpath = "//a[@href='/web/index.php/buzz/viewBuzz']")
+		private WebElement buzz;
+
+		@FindBy(xpath = "//textarea[@placeholder=\"What's on your mind?\"]")
+		private WebElement text;
+
+		@FindBy(xpath = "//button[normalize-space()='Post']")
+		private WebElement post;
+
+		@FindBy(xpath = "//div[contains(@class,'orangehrm-buzz-post')]")
+		private WebElement recentPost;
+
+		public void clickBuzz() {
+			buzz.click();
+		}
+
+		public void enterPost(String msg) {
+			text.sendKeys(msg);
+		}
+
+		public void clickPost() {
+			post.click();
+		}
+
+		public boolean verifyPost(String text) {
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+			wait.until(ExpectedConditions.visibilityOfAllElements(recentPost));
+			return recentPost.isDisplayed();
+		}
+
+}
+
+//POM Logout Page
+package Assesmentt;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class LogoutPage {
+	 WebDriver driver;
+	    public LogoutPage(WebDriver driver) {
+	        this.driver = driver;
+	        PageFactory.initElements(driver, this);
+	    }
+	
+	   @FindBy(id = "react-burger-menu-btn")
+	    private WebElement menu;
+
+	    @FindBy(id = "logout_sidebar_link")
+	    private WebElement logout;
+	    
+	    public void clickMenu() {
+	        menu.click();
+	    }
+
+	    public void clickLogout() {
+	        logout.click();
+	    }
+
+}
+
+//Property file
+browser chrome
+url https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index
+username Admin
+password admin123
+
+//Excel file
+text
+Hello..This is Author Arshiya Anjum
+
+//testScript
+package FinalTest;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import Assesmentt.BuzzPage;
+import Assesmentt.Day11_Base;
+
+public class test1 extends Day11_Base {
+		@Test
+		public void createBuzzPost() throws EncryptedDocumentException, IOException {
+
+			BuzzPage bp = new BuzzPage(driver);
+			// EXCEL FILE
+			FileInputStream excel = new FileInputStream("./src/test/resources/DDT/Day6_testcase.xlsx");
+			Workbook wb = WorkbookFactory.create(excel);
+			Sheet s = wb.getSheet("Sheet3");
+			String postText = s.getRow(1).getCell(0).getStringCellValue();
+
+			// Click Buzz
+			bp.clickBuzz();
+
+			// Enter text
+			bp.enterPost(postText);
+
+			// Click Post
+			bp.clickPost();
+
+			boolean result = bp.verifyPost(postText);
+			Assert.assertTrue(result);
+			System.out.println("Post is successfully displayed in Recent Posts");
+		}
+
+}
